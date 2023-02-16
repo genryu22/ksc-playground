@@ -1,16 +1,3 @@
-import * as monaco from 'monaco-editor';
-import { io } from "socket.io-client";
-import 'normalize.css';
-import './index.css';
-import { receivePoints, resizeCanvas } from './renderer';
-
-window.addEventListener("DOMContentLoaded", () => {
-	const loadValue = () => {
-		const localValue = localStorage.getItem('editor_content');
-		if (localValue !== null) {
-			return localValue;
-		} else {
-			return `
 // 物理パラメタ
 const dim = 2; // 空間次元数
 const rho = 1.0e+3; // 密度 [kg/m^3]
@@ -627,56 +614,4 @@ setInterval(() => {
 		sizes: convertParticlesToSizes(particles),
 		arrows: convertParticlesToArrows(particles),
 	});
-});
-`;
-		}
-	}
-
-	const container = document.querySelector('#root') as HTMLDivElement;
-	const editor = monaco.editor.create(container, {
-		value: loadValue(),
-		language: 'javascript',
-		minimap: {
-			enabled: false,
-		}
-	});
-	const model = editor.getModel();
-	if (model) {
-		model.onDidChangeContent((event) => {
-			localStorage.setItem('editor_content', model!.getValue());
-		});
-	}
-
-	const socket = io();
-
-	const resultOverlay = document.querySelector('#resultOverlay') as HTMLDivElement;
-	const closeOverlay = document.querySelector('#closeOverlay') as HTMLDivElement;
-	const errorMessage = document.querySelector('#errorMessage') as HTMLDivElement;
-
-	const submitButton = document.querySelector('#submit') as HTMLButtonElement;
-	submitButton.addEventListener('click', () => {
-		socket.emit('code', model!.getValue());
-
-		resizeCanvas();
-		resultOverlay.style.display = 'block';
-		errorMessage.textContent = '';
-	});
-
-	let res: String = '';
-	socket.on('data_packet', (data: string) => {
-		res += data;
-		if (data.endsWith('\n')) {
-			receivePoints(res.trim().split(',').map(s => Number(s)));
-			res = '';
-		}
-	})
-
-	socket.on('error_packet', data => {
-		errorMessage.textContent = data;
-		console.log(data)
-	})
-
-	closeOverlay.addEventListener('click', () => {
-		resultOverlay.style.display = 'none';
-	})
 });

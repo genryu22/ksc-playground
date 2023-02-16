@@ -1,5 +1,5 @@
 #root {
-	width: 100vw;
+	width: 90vw;
 	height: 95vh;
 	border: 1px solid #ccc;
 }
@@ -9,4 +9,42 @@
 	height: 4vh;
 	margin-top: 0.5vh;
 	margin-left: 0.5vh;
+}
+
+#inputUI {
+	position: absolute;
+	width: 100vw;
+	height: 100vh;
+	z-index: 0;
+}
+
+#resultOverlay {
+	display: none;
+	position: absolute;
+	width: 100vw;
+	height: 100vh;
+	z-index: 1;
+}
+
+#closeOverlay {
+	position: absolute;
+}
+
+#errorMessage {
+	position: absolute;
+	top: 100px;
+	left: 50px;
+
+	width: 90vw;
+
+	color: red;
+
+	white-space: pre-wrap;
+	word-wrap: break-word;
+}
+
+#canvasContainer {
+	position: absolute;
+	width: 100vw;
+	height: 100vh;
 }
