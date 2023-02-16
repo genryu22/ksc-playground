@@ -2,5 +2,9 @@
 	"compilerOptions": {
 		"module": "CommonJS",
 		"strict": true,
-	}
+		"outDir": "./dist",
+	},
+	"include": [
+		"src/**/*"
+	],
 }
