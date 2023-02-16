@@ -4,7 +4,6 @@ const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
-import process from 'node:process';
 
 app.use(express.static(__dirname + '/frontend/dist/'));
 
